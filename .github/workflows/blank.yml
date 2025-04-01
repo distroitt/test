@@ -28,8 +28,8 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
-      - name: Ping google
-        run: curl https://google.com
+      - name: List files in repository
+        run: ls -la
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
