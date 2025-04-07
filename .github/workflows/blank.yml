@@ -25,4 +25,4 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       - name: Run Docker container
-        run: docker run --rm -t -v ~/auto-lab/testing/:/app -v ~/auto-lab/.clang-tidy:/app/.clang-tidy distroit/lint main.cpp --quiet -- | awk '/warning:/{w++} /error:/{e++} END{print "Warnings: " w, "Errors: " e}'
+        run: docker run --rm -t -v ~/auto-lab/testing/:/app -v ~/auto-lab/.clang-tidy:/app/.clang-tidy distroit/lint main.cpp --quiet -- | grep -c "warning:"
