@@ -20,6 +20,9 @@ jobs:
           # Получаем список измененных файлов
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
           
+          # Флаг для отслеживания ошибок
+          HAS_ERRORS=0
+          
           # Проверяем, что пользователь изменяет только свою директорию
           for file in $CHANGED_FILES; do
             # Извлекаем имя пользователя из пути
@@ -28,6 +31,14 @@ jobs:
             # Проверяем соответствие имени пользователя
             if [[ "$USER_DIR" != "$GITHUB_USER" ]]; then
               echo "Error: You can only modify files in your own directory"
-              exit 1
+              echo "Attempted to modify file: $file"
+              echo "Current user: $GITHUB_USER"
+              echo "File belongs to user directory: $USER_DIR"
+              HAS_ERRORS=1
             fi
           done
+          
+          # Если были ошибки - завершаем с ошибкой
+          if [ $HAS_ERRORS -ne 0 ]; then
+            exit 1
+          fi
