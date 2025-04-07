@@ -1,4 +1,4 @@
-name: Validate User Contribution
+name: Validate and Remove Incorrect Commit
 
 on:
   push:
@@ -6,12 +6,14 @@ on:
       - 'users/**'
 
 jobs:
-  validate-contribution:
+  validate-and-rollback:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # Важно: разрешаем push с токеном
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate User Directory
         env:
@@ -38,7 +40,17 @@ jobs:
             fi
           done
           
-          # Если были ошибки - завершаем с ошибкой
+          # Если были ошибки - удаляем коммит
           if [ $HAS_ERRORS -ne 0 ]; then
+            # Настройка git
+            git config user.name 'GitHub Action'
+            git config user.email 'action@github.com'
+            
+            # Возврат к предыдущему коммиту
+            git reset --hard HEAD^
+            
+            # Принудительный пуш
+            git push origin +HEAD
+            
             exit 1
           fi
