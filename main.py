@@ -1,1 +1,2 @@
-rgar = 5
+import rar
+rgar=5
