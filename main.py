@@ -1,2 +1,3 @@
 import rar
-rgar=5
+
+rgar = 5
