@@ -8,6 +8,7 @@ def say_hello( name ):
 def unused_function():
     pass
 
+
 def calculate_sum(a,b):
     result=a + b
     return result
